@@ -144,6 +144,10 @@ public class GameLogic
             }
         }
 
+        winType[0] = -1;
+        winType[1] = -1;
+        winType[2] = -1;
+
         player = 1;
 
         play_again_button.setVisibility(View.GONE);
