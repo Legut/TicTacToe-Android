@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/KolkoKrzyzyk/app/src/main/res/layout/activity_challenge.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/KolkoKrzyzyk/app/src/main/res/layout/activity_gameplay.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/KolkoKrzyzyk/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/KolkoKrzyzyk/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/wlegu/AndroidStudioProjects/TicTacToeAndroid/app/src/main/res/layout/activity_challenge.xml" value="0.16818642350557245" />
         <entry key="..\:/Users/wlegu/AndroidStudioProjects/TicTacToeAndroid/app/src/main/res/layout/activity_login.xml" value="0.5" />
         <entry key="..\:/Users/wlegu/AndroidStudioProjects/TicTacToeAndroid/app/src/main/res/layout/activity_main.xml" value="0.33" />
