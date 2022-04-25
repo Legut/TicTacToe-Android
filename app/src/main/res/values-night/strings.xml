@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">TicTacToe Android</string>
+    <string name="admob_app_id">ca-app-pub-8435860429625402~3736615167</string>
+    <string name="admob_banner_ad">ca-app-pub-8435860429625402/1326074246</string>
+    <string name="register_form_activity_big_title">Register form</string>
+    <string name="register_form_activity_small_title">Fill the following form to register</string>
+    <string name="nickname_placeholder">Nickname</string>
+    <string name="email_placeholder">Email</string>
+    <string name="password_placeholder">Password</string>
+    <string name="repeat_password_placeholder">Repeat password</string>
+    <string name="register">Register</string>
+    <string name="login_form_activity_big_title">Login form</string>
+    <string name="login_form_activity_small_title">Fill the following form to login</string>
+    <string name="login">Login</string>
+    <string name="challenge_user">Challenge user</string>
+    <string name="main_activity_activity_big_title">Main menu</string>
+    <string name="main_activity_small_title">Hello</string>
+    <string name="friends">Friends</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+</resources>

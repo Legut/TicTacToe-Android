@@ -1,6 +1,7 @@
 package com.example.tictactoeandroid;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -20,9 +22,29 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton, registerButton;
     private Toast lastToast;
 
+
+    SharedPreferences sharedPreferences = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPreferences = getSharedPreferences("night",0);
+        Boolean boleanValue = sharedPreferences.getBoolean("night_mode",false);
+
+        if(!boleanValue)
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        }
+        else
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        }
+
+
+
         setContentView(R.layout.activity_login);
 
         emailInput = findViewById(R.id.email_input);
@@ -51,6 +73,10 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         registerButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
+
+
+
+
     }
 
     /**
