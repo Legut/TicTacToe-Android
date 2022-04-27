@@ -74,9 +74,6 @@ public class LoginActivity extends AppCompatActivity {
 
         registerButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
 
-
-
-
     }
 
     /**

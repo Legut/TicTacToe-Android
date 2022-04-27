@@ -6,20 +6,31 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+
+import android.widget.Button;
 import android.widget.CompoundButton;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class SettingsActivity extends AppCompatActivity
 {
     SwitchCompat ThemeSwitch;
     SharedPreferences sharedPreferences = null;
+    Button AudioList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+
+
+
         setContentView(R.layout.activity_settings);
         ThemeSwitch = findViewById(R.id.Theme);
 
@@ -65,6 +76,11 @@ public class SettingsActivity extends AppCompatActivity
                 }
             }
         });
+
+
+        AudioList = findViewById(R.id.AudioListButton);
+        AudioList.setOnClickListener(task -> startActivity(new Intent(getApplicationContext(), BackgroundMusicActivity.class)));
+
 
     }
 }
