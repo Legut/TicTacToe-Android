@@ -18,7 +18,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -36,7 +35,7 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_menu);
 
         challengeButton = findViewById(R.id.challenge_user_button);
         friendsButton = findViewById(R.id.friends_button);
@@ -54,7 +53,7 @@ public class MainMenuActivity extends AppCompatActivity {
         // Check if user is not signed in (null)
         if (fAuth.getCurrentUser() == null) { finish(); }
 
-        challengeButton.setOnClickListener(task -> startActivity(new Intent(getApplicationContext(), ChallengeActivity.class)));
+        challengeButton.setOnClickListener(task -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
         friendsButton.setOnClickListener(task -> startActivity(new Intent(getApplicationContext(), FriendsActivity.class)));
         settingsButton.setOnClickListener(task -> startActivity(new Intent(getApplicationContext(), SettingsActivity.class)));
         logoutButton.setOnClickListener(task -> { FirebaseAuth.getInstance().signOut(); finish(); });

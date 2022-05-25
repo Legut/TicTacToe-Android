@@ -3,11 +3,12 @@
     package="com.example.tictactoeandroid">
 
 
-
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <application
 
         android:allowBackup="true"
@@ -27,10 +28,14 @@
             android:name=".BackgroundMusicActivity"
             android:exported="false" />
         <activity
-            android:name=".ChallengeActivity"
+            android:name=".LoginActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,16 +43,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainMenuActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <!-- Sample AdMob app ID: ca-app-pub-8435860429625402~3736615167 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id"/>
+            android:value="@string/admob_app_id" />
 
 
     </application>
