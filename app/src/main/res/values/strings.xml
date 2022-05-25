@@ -20,4 +20,7 @@
     <string name="logout">Logout</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_winner_msg">No winner :/</string>
+    <string name="waiting_for_client">Waiting for client…</string>
+    <string name="join_a_game">Join a game</string>
+    <string name="host_game">Host game</string>
 </resources>

@@ -14,10 +14,8 @@ public class MainActivity extends AppCompatActivity implements Start_Fragment.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "Uruchomiony");
         setContentView(R.layout.activity_main);
 
-        //fragment for start or join the game
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.activity_main, new Start_Fragment()).commit();
     }
@@ -25,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements Start_Fragment.On
     @Override
     public void onButtonSelected(int id) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Log.e("Cokolwiek", "haha");
         // Replace whatever is in the fragment_container view with this fragment,
         if (id == 2) { //client
             transaction.replace(R.id.activity_main, new Client_Fragment());

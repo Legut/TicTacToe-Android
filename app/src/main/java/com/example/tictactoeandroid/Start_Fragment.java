@@ -1,8 +1,5 @@
 package com.example.tictactoeandroid;
 
-
-import java.util.Set;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -14,144 +11,90 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.util.Set;
+
 public class Start_Fragment extends Fragment {
-
     private OnFragmentInteractionListener mListener;
+    private BluetoothAdapter mBluetoothAdapter = null;
+
     public interface OnFragmentInteractionListener {
-        //Callback for when an item has been selected
-        public void onButtonSelected(int id);
-    }
-    //UI stuff
-    Button btn_client, btn_server;
-    TextView logger; //show connection info
-
-    //bluetooth device and code to turn the device on if needed.
-    BluetoothAdapter mBluetoothAdapter = null;
-    private static final int REQUEST_ENABLE_BT = 2;
-
-
-    public Start_Fragment() {
-        // Required empty public constructor
+        void onButtonSelected(int id);
     }
 
-    //A simple method to append data to the logger textview.
-    //so I don't have to think about it in the code.
-    public void mkmsg(String msg) {
-        logger.append(msg + "\n");
-    }
-
-
-    //This code will check to see if there is a bluetooth device and
-    //turn it on if is it turned off.
     public void startbt() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
-            // Device does not support Bluetooth
-            mkmsg("This device does not support bluetooth");
+            Toast.makeText(getActivity(),"This device does not support bluetooth.", Toast.LENGTH_SHORT).show();
             return;
         }
-        //make sure bluetooth is enabled.
         if (!mBluetoothAdapter.isEnabled()) {
-            mkmsg("There is bluetooth, but turned off");
+            Toast.makeText(getActivity(),"There is bluetooth, but turned off.", Toast.LENGTH_SHORT).show();
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            startActivityIntent.launch(enableBtIntent);
         } else {
-            mkmsg("The bluetooth is ready to use.");
-            //bluetooth is on, so list paired devices from here.
+            Toast.makeText(getActivity(),"The bluetooth is ready to use.", Toast.LENGTH_SHORT).show();
             querypaired();
         }
     }
 
-    /*
-     * This method will query the bluetooth device and ask for a list of all
-     * paired devices.  It will then display to the screen the name of the device and the address
-     *   In client fragment we need this address to so we can connect to the bluetooth device that is acting as the server.
-     */
-
     @SuppressLint("MissingPermission")
     public void querypaired() {
-        mkmsg("Paired Devices:");
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        // If there are paired devices
         if (pairedDevices.size() > 0) {
-            // Loop through paired devices
-            final BluetoothDevice blueDev[] = new BluetoothDevice[pairedDevices.size()];
-            String item;
+            final BluetoothDevice[] blueDev = new BluetoothDevice[pairedDevices.size()];
             int i = 0;
             for (BluetoothDevice devicel : pairedDevices) {
                 blueDev[i] = devicel;
-                item = blueDev[i].getName() + ": " + blueDev[i].getAddress();
-                mkmsg("Device: " + item);
                 i++;
             }
 
         } else {
-            mkmsg("There are no paired devices");
+            Toast.makeText(getActivity(),"There are no paired devices.", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        //Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_start, container, false);
-        logger = (TextView) myView.findViewById(R.id.logger1);
-
-
-        btn_client = (Button) myView.findViewById(R.id.button2);
-        btn_client.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) //don't call if null, duh...
-                    mListener.onButtonSelected(2);
-            }
+        Button btn_client = myView.findViewById(R.id.button2);
+        btn_client.setOnClickListener(v -> {
+            if (mListener != null)
+                mListener.onButtonSelected(2);
         });
-        btn_server = (Button) myView.findViewById(R.id.button1);
-        btn_server.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) //don't call if null, duh...
-                    mListener.onButtonSelected(1);
-            }
+        Button btn_server = myView.findViewById(R.id.button1);
+        btn_server.setOnClickListener(v -> {
+            if (mListener != null)
+                mListener.onButtonSelected(1);
         });
 
         startbt();
         return myView;
     }
 
-
+    ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    querypaired();
+                } else {
+                    Toast.makeText(getActivity(),"Please turn the bluetooth on.", Toast.LENGTH_SHORT).show();
+                }
+    });
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ENABLE_BT) {
-            //bluetooth result code.
-            if (resultCode == Activity.RESULT_OK) {
-                mkmsg("Bluetooth is on.");
-                querypaired();
-            } else {
-                mkmsg("Please turn the bluetooth on.");
-            }
-        }
-    }
-
-
-    // This is all for the callbacks
-    //onAttach(Activity activity) is deprecated so new may not be invoked in API < 23
-    @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         Activity activity = getActivity();
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(activity + " must implement OnFragmentInteractionListener");
         }
     }
 

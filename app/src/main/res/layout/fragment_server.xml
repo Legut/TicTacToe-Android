@@ -7,34 +7,13 @@
     android:orientation="vertical"
     tools:context=".Server_Fragment">
 
-    <Button
-        android:id="@+id/start_server"
+    <TextView
+        android:id="@+id/sv_output"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Send message" />
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/sv_output"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="output:\n"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="message here"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
+        android:layout_height="fill_parent"
+        android:paddingTop="30pt"
+        android:text="@string/waiting_for_client"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="20sp" />
 </LinearLayout>
