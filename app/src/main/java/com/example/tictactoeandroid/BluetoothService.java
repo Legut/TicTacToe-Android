@@ -1,5 +1,6 @@
 package com.example.tictactoeandroid;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
@@ -124,6 +125,7 @@ public class BluetoothService {
      * @param socket The BluetoothSocket on which the connection was made
      * @param device The BluetoothDevice that has been connected
      */
+    @SuppressLint("MissingPermission")
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice
             device) {
         Log.d(TAG, "connected, Socket Type:");
@@ -233,6 +235,7 @@ public class BluetoothService {
      * like a server-side client. It runs until a connection is accepted
      * (or until cancelled).
      */
+    @SuppressLint("MissingPermission")
     private class AcceptThread extends Thread {
         // The local server socket
         private final BluetoothServerSocket mmServerSocket;
@@ -311,6 +314,7 @@ public class BluetoothService {
      * with a device. It runs straight through; the connection either
      * succeeds or fails.
      */
+    @SuppressLint("MissingPermission")
     private class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;

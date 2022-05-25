@@ -1,5 +1,6 @@
 package com.example.tictactoeandroid;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
@@ -37,6 +38,7 @@ public class Server_Fragment extends Fragment {
     }
 
     //TODO: put it in the separate class to avoid repetition?
+    @SuppressLint("HandlerLeak")
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

@@ -3,6 +3,7 @@ package com.example.tictactoeandroid;
 
 import java.util.Set;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -71,6 +72,7 @@ public class Start_Fragment extends Fragment {
      *   In client fragment we need this address to so we can connect to the bluetooth device that is acting as the server.
      */
 
+    @SuppressLint("MissingPermission")
     public void querypaired() {
         mkmsg("Paired Devices:");
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();

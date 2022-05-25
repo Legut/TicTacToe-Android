@@ -1,5 +1,6 @@
 package com.example.tictactoeandroid;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -58,7 +59,9 @@ public class Game_Fragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressLint("HandlerLeak")
     private final Handler handler = new Handler() {
+        @SuppressLint("HandlerLeak")
         @Override
         public void handleMessage(Message msg) {
             FragmentActivity activity = getActivity();

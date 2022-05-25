@@ -2,6 +2,7 @@ package com.example.tictactoeandroid;
 
 import java.util.Set;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -40,7 +41,9 @@ public class Client_Fragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressLint("HandlerLeak")
     private final Handler handler = new Handler() {
+        @SuppressLint("HandlerLeak")
         @Override
         public void handleMessage(Message msg) {
             FragmentActivity activity = getActivity();
@@ -175,6 +178,7 @@ public class Client_Fragment extends Fragment {
 
 
 
+    @SuppressLint("MissingPermission")
     //setting the device
     public void querypaired() {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();

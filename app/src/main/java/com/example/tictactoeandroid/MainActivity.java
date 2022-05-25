@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements Start_Fragment.On
 
         //fragment for start or join the game
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.activity_challenge, new Start_Fragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.activity_main, new Start_Fragment()).commit();
     }
 
     @Override
@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity implements Start_Fragment.On
         Log.e("Cokolwiek", "haha");
         // Replace whatever is in the fragment_container view with this fragment,
         if (id == 2) { //client
-            transaction.replace(R.id.activity_challenge, new Client_Fragment());
+            transaction.replace(R.id.activity_main, new Client_Fragment());
         } else { //server
-            transaction.replace(R.id.activity_challenge, new Server_Fragment());
+            transaction.replace(R.id.activity_main, new Server_Fragment());
         }
         // and add the transaction to the back stack so the user can navigate back
         transaction.addToBackStack(null);
