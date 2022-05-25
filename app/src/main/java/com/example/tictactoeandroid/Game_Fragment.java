@@ -2,7 +2,6 @@ package com.example.tictactoeandroid;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,38 +15,19 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 public class Game_Fragment extends Fragment {
-    TextView status;
     private AlertDialog dialog;
-    private final String noWinnerMessage = "no winner";
-    public String turn = "X";
     private String myMark;
-
-    BluetoothService mConnectedThread = null;
-
-    public static String MARK_CHOSEN = "MARK_CHOSEN";
-    public int[][] matrix = new int[3][3]; //matrix to know who won
-
-    public static TextView arrayOfButtons[][] = new TextView[3][3];
-    //buttons
-    private TextView c00 = null;
-    private TextView c01 = null;
-    private TextView c02 = null;
-    private TextView c10 = null;
-    private TextView c11 = null;
-    private TextView c12 = null;
-    private TextView c20 = null;
-    private TextView c21 = null;
-    private TextView c22 = null;
-
-    private static String IS_SERVER;
+    private BluetoothService mConnectedThread = null;
+    private String turn = "X";
+    private final int[][] matrix = new int[3][3];
+    private final TextView[][] arrayOfButtons = new TextView[3][3];
 
 
     public static Game_Fragment newInstance(String mark, boolean server) {
         Game_Fragment game = new Game_Fragment();
         Bundle bdl = new Bundle(2);
-        bdl.putString(MARK_CHOSEN, mark);
-        bdl.putBoolean(IS_SERVER, server);
-
+        bdl.putString(Constants.MARK_CHOSEN, mark);
+        bdl.putBoolean(Constants.IS_SERVER, server);
         game.setArguments(bdl);
         return game;
     }
@@ -56,36 +36,32 @@ public class Game_Fragment extends Fragment {
     private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.MESSAGE_WRITE:
-                    break;
-                case Constants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    String readMessage = new String(readBuf, 0, msg.arg1);
+            if (msg.what == Constants.MESSAGE_READ) {
+                byte[] readBuf = (byte[]) msg.obj;
+                String readMessage = new String(readBuf, 0, msg.arg1);
 
-                    if(!isMatrixFull() && !isWinnerFound() && readMessage.length() == 2) {
-                        int i = readMessage.codePointAt(0) - 48;
-                        int j = readMessage.codePointAt(1) - 48;
-                        if (i < 3 && j < 3 ) {
-                            putInMatrix(i, j, turn);
-                            updateUI();
-                            switchTurn(turn);
-                        }
+                if (!isMatrixFull() && !isWinnerFound() && readMessage.length() == 2) {
+                    int i = readMessage.codePointAt(0) - 48;
+                    int j = readMessage.codePointAt(1) - 48;
+                    if (i < 3 && j < 3) {
+                        putInMatrix(i, j, turn);
+                        updateUI();
+                        switchTurn(turn);
                     }
+                }
 
-                    if(readMessage.equals("X")) {
-                        dialog = createDialog("O");
-                        dialog.show();
-                    }
-                    if(readMessage.equals("O")) {
-                        dialog = createDialog("X");
-                        dialog.show();
-                    }
-                    if(readMessage.equals(noWinnerMessage)) {
-                        dialog = createDialog(noWinnerMessage);
-                        dialog.show();
-                    }
-                    break;
+                if (readMessage.equals("X")) {
+                    dialog = createDialog("X");
+                    dialog.show();
+                }
+                if (readMessage.equals("O")) {
+                    dialog = createDialog("O");
+                    dialog.show();
+                }
+                if (readMessage.equals(getResources().getString(R.string.no_winner_msg))) {
+                    dialog = createDialog(getResources().getString(R.string.no_winner_msg));
+                    dialog.show();
+                }
             }
         }
     };
@@ -95,8 +71,8 @@ public class Game_Fragment extends Fragment {
         super.onCreate(savedInstanceState);
         boolean isServer;
 
-        myMark = getArguments().getString(MARK_CHOSEN);
-        isServer = getArguments().getBoolean(IS_SERVER);
+        myMark = getArguments().getString(Constants.MARK_CHOSEN);
+        isServer = getArguments().getBoolean(Constants.IS_SERVER);
         if(isServer) {
             mConnectedThread = Server_Fragment.getBluetoothService(); }
         else {
@@ -109,11 +85,10 @@ public class Game_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_game, container, false);
-        status = myView.findViewById(R.id.Status);
+        TextView status = myView.findViewById(R.id.Status);
         status.setText("playing for: " + myMark);
 
         initButtons(myView);
-        buttonsToArray();
 
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
@@ -141,27 +116,15 @@ public class Game_Fragment extends Fragment {
     }
 
     private void initButtons(View myView) {
-        c00 = myView.findViewById(R.id.cell11);
-        c01 = myView.findViewById(R.id.cell12);
-        c02 = myView.findViewById(R.id.cell13);
-        c10 = myView.findViewById(R.id.cell21);
-        c11 = myView.findViewById(R.id.cell22);
-        c12 = myView.findViewById(R.id.cell23);
-        c20 = myView.findViewById(R.id.cell31);
-        c21 = myView.findViewById(R.id.cell32);
-        c22 = myView.findViewById(R.id.cell33);
-    }
-
-    private void buttonsToArray() {
-        arrayOfButtons[0][0] = c00;
-        arrayOfButtons[0][1] = c01;
-        arrayOfButtons[0][2] = c02;
-        arrayOfButtons[1][0] = c10;
-        arrayOfButtons[1][1] = c11;
-        arrayOfButtons[1][2] = c12;
-        arrayOfButtons[2][0] = c20;
-        arrayOfButtons[2][1] = c21;
-        arrayOfButtons[2][2] = c22;
+        arrayOfButtons[0][0] = myView.findViewById(R.id.cell11);
+        arrayOfButtons[0][1] = myView.findViewById(R.id.cell12);
+        arrayOfButtons[0][2] = myView.findViewById(R.id.cell13);
+        arrayOfButtons[1][0] = myView.findViewById(R.id.cell21);
+        arrayOfButtons[1][1] = myView.findViewById(R.id.cell22);
+        arrayOfButtons[1][2] = myView.findViewById(R.id.cell23);
+        arrayOfButtons[2][0] = myView.findViewById(R.id.cell31);
+        arrayOfButtons[2][1] = myView.findViewById(R.id.cell32);
+        arrayOfButtons[2][2] = myView.findViewById(R.id.cell33);
     }
 
     private void handleCellClick(String colRow) {
@@ -186,9 +149,9 @@ public class Game_Fragment extends Fragment {
             mConnectedThread.write(turn.getBytes());
         }
         if(isMatrixFull()) {
-            dialog = createDialog(noWinnerMessage);
+            dialog = createDialog(getResources().getString(R.string.no_winner_msg));
             dialog.show();
-            mConnectedThread.write(noWinnerMessage.getBytes());
+            mConnectedThread.write(getResources().getString(R.string.no_winner_msg).getBytes());
         }
     }
 
@@ -201,9 +164,9 @@ public class Game_Fragment extends Fragment {
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
                 switch (matrix[i][j]) {
-                    case Constants.X: arrayOfButtons[i][j].setText("X");break;
-                    case Constants.O: arrayOfButtons[i][j].setText("O");break;
-                    case Constants.NONE: arrayOfButtons[i][j].setText("");break;
+                    case Constants.X: arrayOfButtons[i][j].setText("X"); break;
+                    case Constants.O: arrayOfButtons[i][j].setText("O"); break;
+                    case Constants.NONE: arrayOfButtons[i][j].setText(""); break;
                 }
             }
         }
@@ -213,7 +176,7 @@ public class Game_Fragment extends Fragment {
         if(matrix[i][j] != Constants.X && matrix[i][j] != Constants.O) {
             switch (currentMark) {
                 case "X": matrix[i][j] = Constants.X; break;
-                case "O": matrix[i][j] = Constants.O;
+                case "O": matrix[i][j] = Constants.O; break;
             }
         }
     }
@@ -230,7 +193,6 @@ public class Game_Fragment extends Fragment {
     }
 
     private boolean isWinCombination(int a, int b, int c) {
-
         if(a == Constants.X && b == Constants.X && c == Constants.X) return true;
         if(a == Constants.O && b == Constants.O && c == Constants.O) return true;
         return false;
@@ -255,9 +217,15 @@ public class Game_Fragment extends Fragment {
         }
     }
 
+    public String getOpposite(String mark) {
+        if (mark.equals("O")) return "X";
+        else if (mark.equals("X")) return "O";
+        else return "Error";
+    }
+
     public AlertDialog createDialog(final String winner) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Winner is: " + winner);
+        builder.setTitle("Winner is: " + getOpposite(winner));
         builder.setPositiveButton("Play again", (dialog, id) -> {
             cleanMatrix();
             updateUI();
