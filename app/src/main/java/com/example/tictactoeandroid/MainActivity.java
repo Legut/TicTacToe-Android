@@ -1,14 +1,13 @@
 package com.example.tictactoeandroid;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.util.Log;
-
 public class MainActivity extends AppCompatActivity implements Start_Fragment.OnFragmentInteractionListener {
-    private static final String TAG = "ChallengeActivity";
+    private static final String TAG = "MainActivity";
     FragmentManager fragmentManager;
 
     @Override

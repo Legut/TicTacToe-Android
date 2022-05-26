@@ -73,7 +73,8 @@ public class MainMenuActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            smallTitleTextView.setText("Hello " + document.getData().getOrDefault("nickname", "user"));
+                            smallTitleTextView.setText("Hello " + document.getData().getOrDefault("nickname", "user") +
+                                    "\nPoints: " + document.getData().getOrDefault("points", "Error..."));
                         }
                     } else {
                         Log.w(TAG, "Error getting document", task.getException());

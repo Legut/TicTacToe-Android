@@ -14,10 +14,9 @@ public class Constants {
     public static final String TOAST = "toast";
     public static final String MARK_CHOSEN = "MARK_CHOSEN";
     public static final String IS_SERVER = "IS_SERVER";
-
+    public static final String PLAYER_NAME = "PLAYER_NAME";
 
     public static final int NONE = 1000;
     public static final int X = 100;
     public static final int O = 200;
-
 }

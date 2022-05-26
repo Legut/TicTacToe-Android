@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,16 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 public class Game_Fragment extends Fragment {
+    private static final String TAG = "Game_Fragment";
     private AlertDialog dialog;
     private String myMark;
     private BluetoothService mConnectedThread = null;
@@ -59,8 +69,9 @@ public class Game_Fragment extends Fragment {
                     dialog.show();
                 }
                 if (readMessage.equals(getResources().getString(R.string.no_winner_msg))) {
-                    dialog = createDialog(getResources().getString(R.string.no_winner_msg));
+                    dialog = createNoWinnerDialog();
                     dialog.show();
+                    switchTurn(turn);
                 }
             }
         }
@@ -70,7 +81,10 @@ public class Game_Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean isServer;
-
+        // Initialize Firebase Auth
+        fAuth = FirebaseAuth.getInstance();
+        // Initialize Firebase Firestore
+        db = FirebaseFirestore.getInstance();
         myMark = getArguments().getString(Constants.MARK_CHOSEN);
         isServer = getArguments().getBoolean(Constants.IS_SERVER);
         if(isServer) {
@@ -147,12 +161,37 @@ public class Game_Fragment extends Fragment {
             dialog = createDialog(turn);
             dialog.show();
             mConnectedThread.write(turn.getBytes());
+            informAboutPoints();
         }
         if(isMatrixFull()) {
-            dialog = createDialog(getResources().getString(R.string.no_winner_msg));
+            dialog = createNoWinnerDialog();
             dialog.show();
             mConnectedThread.write(getResources().getString(R.string.no_winner_msg).getBytes());
+            switchTurn(turn);
         }
+    }
+
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore db;
+    @SuppressLint("NewApi")
+    private void informAboutPoints() {
+        db.collection("user_data").whereEqualTo("uid", Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            int userPoints = Integer.parseInt(String.valueOf(document.getData().get("points"))) + 10;
+                            Map<String, Object> data = document.getData();
+                            data.replace("points", userPoints);
+                            Toast.makeText(getActivity(), data.get("nickname") + " Your points: " + userPoints, Toast.LENGTH_SHORT).show();
+                            db.collection("user_data").document(document.getId()).set(data)
+                                    .addOnSuccessListener(aVoid -> Log.d(TAG, "POINTS DocumentSnapshot successfully written!"))
+                                    .addOnFailureListener(e -> Log.w(TAG, "POINTS Error writing document", e));
+                        }
+                    } else {
+                        Log.w(TAG, "Error getting document", task.getException());
+                    }
+                });
     }
 
     private void switchTurn(String currentTurn) {
@@ -217,22 +256,32 @@ public class Game_Fragment extends Fragment {
         }
     }
 
-    public String getOpposite(String mark) {
+    private String getOpposite(String mark) {
         if (mark.equals("O")) return "X";
         else if (mark.equals("X")) return "O";
         else return "Error";
     }
 
-    public AlertDialog createDialog(final String winner) {
+    private AlertDialog createDialog(String winner) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Winner is: " + getOpposite(winner));
         builder.setPositiveButton("Play again", (dialog, id) -> {
             cleanMatrix();
             updateUI();
-            switchTurn(winner);
+            turn = getOpposite(winner);
             Toast.makeText(getActivity(), "new game", Toast.LENGTH_SHORT).show();
         });
         return builder.create();
     }
 
+    private AlertDialog createNoWinnerDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("There is no winner");
+        builder.setPositiveButton("Play again", (dialog, id) -> {
+            cleanMatrix();
+            updateUI();
+            Toast.makeText(getActivity(), "new game", Toast.LENGTH_SHORT).show();
+        });
+        return builder.create();
+    }
 }

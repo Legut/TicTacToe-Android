@@ -50,7 +50,6 @@ public class Server_Fragment extends Fragment {
         }
     };
 
-
     @Override
     public void onStart() {
         super.onStart();

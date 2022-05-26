@@ -43,9 +43,9 @@ public class Client_Fragment extends Fragment {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     //when server have the symbol chosen
-                    if(readMessage.equals("server decided to be X"))  {
+                    if (readMessage.equals("server decided to be X")) {
                         transaction.replace(R.id.activity_main, Game_Fragment.newInstance("O", false));
-                    } else if(readMessage.equals("server decided to be O"))  {
+                    } else if (readMessage.equals("server decided to be O")) {
                         transaction.replace(R.id.activity_main, Game_Fragment.newInstance("X", false));
                     }
                     transaction.addToBackStack(null);
@@ -62,7 +62,6 @@ public class Client_Fragment extends Fragment {
             }
         }
     };
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
