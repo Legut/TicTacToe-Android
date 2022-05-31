@@ -1,4 +1,4 @@
-package com.example.tictactoeandroid;
+package com.example.tictactoeandroid.game;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -15,15 +15,16 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.tictactoeandroid.Constants;
+import com.example.tictactoeandroid.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Game_Fragment extends Fragment {
+public class GameFragment extends Fragment {
     private static final String TAG = "Game_Fragment";
     private AlertDialog dialog;
     private String myMark;
@@ -32,9 +33,8 @@ public class Game_Fragment extends Fragment {
     private final int[][] matrix = new int[3][3];
     private final TextView[][] arrayOfButtons = new TextView[3][3];
 
-
-    public static Game_Fragment newInstance(String mark, boolean server) {
-        Game_Fragment game = new Game_Fragment();
+    public static GameFragment newInstance(String mark, boolean server) {
+        GameFragment game = new GameFragment();
         Bundle bdl = new Bundle(2);
         bdl.putString(Constants.MARK_CHOSEN, mark);
         bdl.putBoolean(Constants.IS_SERVER, server);
@@ -59,7 +59,6 @@ public class Game_Fragment extends Fragment {
                         switchTurn(turn);
                     }
                 }
-
                 if (readMessage.equals("X")) {
                     dialog = createDialog("X");
                     dialog.show();
@@ -81,16 +80,15 @@ public class Game_Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean isServer;
-        // Initialize Firebase Auth
         fAuth = FirebaseAuth.getInstance();
-        // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
         myMark = getArguments().getString(Constants.MARK_CHOSEN);
         isServer = getArguments().getBoolean(Constants.IS_SERVER);
-        if(isServer) {
-            mConnectedThread = Server_Fragment.getBluetoothService(); }
-        else {
-            mConnectedThread = Client_Fragment.getBluetoothService(); }
+        if (isServer) {
+            mConnectedThread = ServerFragment.getBluetoothService();
+        } else {
+            mConnectedThread = ClientFragment.getBluetoothService();
+        }
 
         mConnectedThread.putNewHandler(handler);
     }
@@ -101,16 +99,15 @@ public class Game_Fragment extends Fragment {
         View myView = inflater.inflate(R.layout.fragment_game, container, false);
         TextView status = myView.findViewById(R.id.Status);
         status.setText("playing for: " + myMark);
-
         initButtons(myView);
-
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 final String col = String.valueOf(i);
                 final String row = String.valueOf(j);
                 final String colRow = col + row;
                 arrayOfButtons[i][j].setOnClickListener(v -> {
-                    if(!isMatrixFull() && !isWinnerFound()) { handleCellClick(colRow);
+                    if (!isMatrixFull() && !isWinnerFound()) {
+                        handleCellClick(colRow);
                     } else {
                         checkGameOverCase();
                         Toast.makeText(getActivity(), "game is done", Toast.LENGTH_SHORT).show();
@@ -142,9 +139,8 @@ public class Game_Fragment extends Fragment {
     }
 
     private void handleCellClick(String colRow) {
-        int col = colRow.codePointAt(0)-48;
-        int row = colRow.codePointAt(1)-48;
-
+        int col = colRow.codePointAt(0) - 48;
+        int row = colRow.codePointAt(1) - 48;
         if (turn.equals(myMark)) {
             mConnectedThread.write(colRow.getBytes());
             putInMatrix(col, row, myMark);
@@ -157,13 +153,13 @@ public class Game_Fragment extends Fragment {
     }
 
     private void checkGameOverCase() {
-        if(isWinnerFound()) {
+        if (isWinnerFound()) {
             dialog = createDialog(turn);
             dialog.show();
             mConnectedThread.write(turn.getBytes());
             informAboutPoints();
         }
-        if(isMatrixFull()) {
+        if (isMatrixFull()) {
             dialog = createNoWinnerDialog();
             dialog.show();
             mConnectedThread.write(getResources().getString(R.string.no_winner_msg).getBytes());
@@ -173,6 +169,7 @@ public class Game_Fragment extends Fragment {
 
     private FirebaseAuth fAuth;
     private FirebaseFirestore db;
+
     @SuppressLint("NewApi")
     private void informAboutPoints() {
         db.collection("user_data").whereEqualTo("uid", Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
@@ -195,54 +192,64 @@ public class Game_Fragment extends Fragment {
     }
 
     private void switchTurn(String currentTurn) {
-        if(currentTurn.equals("X")) turn = "O";
-        if(currentTurn.equals("O")) turn = "X";
+        if (currentTurn.equals("X")) turn = "O";
+        if (currentTurn.equals("O")) turn = "X";
     }
 
     private void updateUI() {
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 switch (matrix[i][j]) {
-                    case Constants.X: arrayOfButtons[i][j].setText("X"); break;
-                    case Constants.O: arrayOfButtons[i][j].setText("O"); break;
-                    case Constants.NONE: arrayOfButtons[i][j].setText(""); break;
+                    case Constants.X:
+                        arrayOfButtons[i][j].setText("X");
+                        break;
+                    case Constants.O:
+                        arrayOfButtons[i][j].setText("O");
+                        break;
+                    case Constants.NONE:
+                        arrayOfButtons[i][j].setText("");
+                        break;
                 }
             }
         }
     }
 
     public void putInMatrix(int i, int j, String currentMark) {
-        if(matrix[i][j] != Constants.X && matrix[i][j] != Constants.O) {
+        if (matrix[i][j] != Constants.X && matrix[i][j] != Constants.O) {
             switch (currentMark) {
-                case "X": matrix[i][j] = Constants.X; break;
-                case "O": matrix[i][j] = Constants.O; break;
+                case "X":
+                    matrix[i][j] = Constants.X;
+                    break;
+                case "O":
+                    matrix[i][j] = Constants.O;
+                    break;
             }
         }
     }
 
     private boolean isWinnerFound() {
-        if(isWinCombination(matrix[0][0], matrix[1][1], matrix[2][2])) return true;
-        if(isWinCombination(matrix[0][2], matrix[1][1], matrix[2][0])) return true;
+        if (isWinCombination(matrix[0][0], matrix[1][1], matrix[2][2])) return true;
+        if (isWinCombination(matrix[0][2], matrix[1][1], matrix[2][0])) return true;
 
-        for(int i = 0; i < 3; i++) {
-            if(isWinCombination(matrix[i][0], matrix[i][1], matrix[i][2])) return true;
-            if(isWinCombination(matrix[0][i], matrix[1][i], matrix[2][i])) return true;
+        for (int i = 0; i < 3; i++) {
+            if (isWinCombination(matrix[i][0], matrix[i][1], matrix[i][2])) return true;
+            if (isWinCombination(matrix[0][i], matrix[1][i], matrix[2][i])) return true;
         }
         return false;
     }
 
     private boolean isWinCombination(int a, int b, int c) {
-        if(a == Constants.X && b == Constants.X && c == Constants.X) return true;
-        if(a == Constants.O && b == Constants.O && c == Constants.O) return true;
+        if (a == Constants.X && b == Constants.X && c == Constants.X) return true;
+        if (a == Constants.O && b == Constants.O && c == Constants.O) return true;
         return false;
     }
 
 
     private boolean isMatrixFull() {
         int filledCellsCounter = 0;
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if(matrix[i][j] == Constants.O || matrix[i][j] == Constants.X)
+                if (matrix[i][j] == Constants.O || matrix[i][j] == Constants.X)
                     filledCellsCounter++;
             }
         }
@@ -250,7 +257,7 @@ public class Game_Fragment extends Fragment {
     }
 
     private void cleanMatrix() {
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++)
                 matrix[i][j] = Constants.NONE;
         }

@@ -25,17 +25,17 @@
             android:name=".FriendsActivity"
             android:exported="false" />
         <activity
-            android:name=".BackgroundMusicActivity"
+            android:name=".music.BackgroundMusicActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ChallengeActivity"
             android:exported="false">
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".auth.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

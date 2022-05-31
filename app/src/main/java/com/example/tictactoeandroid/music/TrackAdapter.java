@@ -1,22 +1,19 @@
-package com.example.tictactoeandroid;
+package com.example.tictactoeandroid.music;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-public class TrackAdapter extends BaseAdapter
-{
+import com.example.tictactoeandroid.R;
+
+public class TrackAdapter extends BaseAdapter {
     Context context;
     TrackModel[] tracks;
 
-
-    TrackAdapter(Context context,TrackModel[] tracks)
-    {
+    TrackAdapter(Context context, TrackModel[] tracks) {
         this.context = context;
         this.tracks = tracks;
     }
@@ -38,37 +35,21 @@ public class TrackAdapter extends BaseAdapter
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-
         TrackModel track = (TrackModel) getItem(i);
-
-
-
         ViewHolder holder = null;
-
-        if(view==null)
-        {
-            view= LayoutInflater.from(context).inflate(R.layout.track_item,viewGroup,false);
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.track_item, viewGroup, false);
             holder = new ViewHolder();
-
             holder.titleText = view.findViewById(R.id.track_title);
             view.setTag(holder);
-        }
-        else
-        {
+        } else {
             holder = (ViewHolder) view.getTag();
-
         }
-
         holder.titleText.setText(track.getName());
-
-
-
         return view;
     }
 
-    static class  ViewHolder
-    {
+    static class ViewHolder {
         TextView titleText;
     }
-
 }

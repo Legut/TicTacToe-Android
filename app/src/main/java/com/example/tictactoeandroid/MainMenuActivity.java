@@ -25,7 +25,6 @@ import java.util.Objects;
 
 public class MainMenuActivity extends AppCompatActivity {
     private static final String TAG = "MainMenuActivity";
-    private Button challengeButton, friendsButton, settingsButton, logoutButton;
     private TextView smallTitleTextView;
     private FirebaseAuth fAuth;
     private FirebaseFirestore db;
@@ -37,34 +36,30 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        challengeButton = findViewById(R.id.challenge_user_button);
-        friendsButton = findViewById(R.id.friends_button);
-        settingsButton = findViewById(R.id.settings_button);
-        logoutButton = findViewById(R.id.logout_button);
+        Button challengeButton = findViewById(R.id.challenge_user_button);
+        Button friendsButton = findViewById(R.id.friends_button);
+        Button settingsButton = findViewById(R.id.settings_button);
+        Button logoutButton = findViewById(R.id.logout_button);
         smallTitleTextView = findViewById(R.id.small_title);
         mAdView = findViewById(R.id.adView);
-
-        // Initialize Firebase Auth
         fAuth = FirebaseAuth.getInstance();
-
-        // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
+        if (fAuth.getCurrentUser() == null) {
+            finish();
+        }
 
-        // Check if user is not signed in (null)
-        if (fAuth.getCurrentUser() == null) { finish(); }
-
-        challengeButton.setOnClickListener(task -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
+        challengeButton.setOnClickListener(task -> startActivity(new Intent(getApplicationContext(), ChallengeActivity.class)));
         friendsButton.setOnClickListener(task -> startActivity(new Intent(getApplicationContext(), FriendsActivity.class)));
         settingsButton.setOnClickListener(task -> startActivity(new Intent(getApplicationContext(), SettingsActivity.class)));
-        logoutButton.setOnClickListener(task -> { FirebaseAuth.getInstance().signOut(); finish(); });
+        logoutButton.setOnClickListener(task -> {
+            FirebaseAuth.getInstance().signOut();
+            finish();
+        });
 
         loadAdBanner();
         printNicknameToSmallTitle();
     }
 
-    /**
-     * Prints logged user nickname next to the greeting message inside of a small title TextView
-     */
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void printNicknameToSmallTitle() {
@@ -82,11 +77,9 @@ public class MainMenuActivity extends AppCompatActivity {
                 });
     }
 
-    /**
-     * Requests the advertisement via AdMob functionality and inflates the view with a loaded banner
-     */
     private void loadAdBanner() {
-        MobileAds.initialize(this, initializationStatus -> { });
+        MobileAds.initialize(this, initializationStatus -> {
+        });
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         mAdView.setAdListener(new AdListener() {
@@ -99,5 +92,12 @@ public class MainMenuActivity extends AppCompatActivity {
                 Log.d(TAG, "loadAdBanner: Something went wrong while loading the ad. " + adError);
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        printNicknameToSmallTitle();
     }
 }

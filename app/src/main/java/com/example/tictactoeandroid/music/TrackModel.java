@@ -1,13 +1,11 @@
-package com.example.tictactoeandroid;
+package com.example.tictactoeandroid.music;
 
-public class TrackModel
-{
+public class TrackModel {
     int id;
     String name;
     boolean isPlaying;
 
-    public TrackModel(int id,String name, boolean isPlaying)
-    {
+    public TrackModel(int id, String name, boolean isPlaying) {
         this.id = id;
         this.name = name;
         this.isPlaying = isPlaying;

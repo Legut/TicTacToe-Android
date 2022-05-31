@@ -1,4 +1,4 @@
-package com.example.tictactoeandroid;
+package com.example.tictactoeandroid.game;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -20,12 +20,15 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.tictactoeandroid.Constants;
+import com.example.tictactoeandroid.R;
+
 import java.util.Set;
 
-public class Client_Fragment extends Fragment {
+public class ClientFragment extends Fragment {
     private final String TAG = "Client_Fragment";
     private Button btn_start, btn_device, btn_ready;
-    private BluetoothAdapter mBluetoothAdapter =null;
+    private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothDevice device;
     private static BluetoothService mChatService = null;
 
@@ -37,16 +40,13 @@ public class Client_Fragment extends Fragment {
             switch (msg.what) {
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    //when server have the symbol chosen
                     if (readMessage.equals("server decided to be X")) {
-                        transaction.replace(R.id.activity_main, Game_Fragment.newInstance("O", false));
+                        transaction.replace(R.id.activity_main, GameFragment.newInstance("O", false));
                     } else if (readMessage.equals("server decided to be O")) {
-                        transaction.replace(R.id.activity_main, Game_Fragment.newInstance("X", false));
+                        transaction.replace(R.id.activity_main, GameFragment.newInstance("X", false));
                     }
                     transaction.addToBackStack(null);
                     transaction.commit();
@@ -70,12 +70,13 @@ public class Client_Fragment extends Fragment {
         btn_device.setOnClickListener(v -> querypaired());
         btn_start = myView.findViewById(R.id.start_client);
         btn_start.setEnabled(false);
-        btn_start.setOnClickListener(v -> { startClient(); });
+        btn_start.setOnClickListener(v -> {
+            startClient();
+        });
         btn_ready = myView.findViewById(R.id.ready_game_client);
         btn_ready.setEnabled(false);
         btn_ready.setOnClickListener(v -> sendMessage("choosingDialogQuery"));
 
-        //setup the bluetooth adapter.
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             btn_start.setEnabled(false);
@@ -89,8 +90,7 @@ public class Client_Fragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //creating a BluetoothService here
-        if(mChatService == null) {
+        if (mChatService == null) {
             mChatService = new BluetoothService(getActivity(), handler);
         }
         querypaired();
@@ -102,7 +102,7 @@ public class Client_Fragment extends Fragment {
         if (pairedDevices.size() > 0) {
             final BluetoothDevice[] blueDev = new BluetoothDevice[pairedDevices.size()];
             String[] items = new String[blueDev.length];
-            int i =0;
+            int i = 0;
             for (BluetoothDevice devicel : pairedDevices) {
                 blueDev[i] = devicel;
                 items[i] = blueDev[i].getName() + ": " + blueDev[i].getAddress();
@@ -112,7 +112,7 @@ public class Client_Fragment extends Fragment {
             builder.setTitle("Choose Bluetooth:");
             builder.setSingleChoiceItems(items, -1, (dialog, item) -> {
                 dialog.dismiss();
-                if (item >= 0 && item <blueDev.length) {
+                if (item >= 0 && item < blueDev.length) {
                     device = blueDev[item];
                     btn_device.setText("device: " + blueDev[item].getName());
                     btn_start.setEnabled(true);

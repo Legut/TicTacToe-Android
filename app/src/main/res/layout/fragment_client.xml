@@ -5,24 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Client_Fragment">
-
+    tools:context=".game.ClientFragment">
     <Button
         android:id="@+id/which_device"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Device: ?" />
-
+        android:text="@string/device" />
     <Button
         android:id="@+id/start_client"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Join" />
-
+        android:text="@string/join" />
     <Button
         android:id="@+id/ready_game_client"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="ready to play!" />
-
+        android:text="@string/ready_to_play" />
 </LinearLayout>

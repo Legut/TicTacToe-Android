@@ -1,4 +1,4 @@
-package com.example.tictactoeandroid;
+package com.example.tictactoeandroid.game;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -17,7 +17,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class Server_Fragment extends Fragment {
+import com.example.tictactoeandroid.Constants;
+import com.example.tictactoeandroid.R;
+
+public class ServerFragment extends Fragment {
     private static String TAG = "Server_Fragment";
     private FragmentManager fragmentManager;
     private static BluetoothService mChatService = null;
@@ -29,11 +32,12 @@ public class Server_Fragment extends Fragment {
         public void handleMessage(Message msg) {
             FragmentActivity activity = getActivity();
             switch (msg.what) {
-                case Constants.MESSAGE_WRITE: break;
+                case Constants.MESSAGE_WRITE:
+                    break;
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    if(readMessage.equals("choosingDialogQuery"))  {
+                    if (readMessage.equals("choosingDialogQuery")) {
                         AlertDialog dialog = createDialog();
                         dialog.show();
                     }
@@ -53,8 +57,7 @@ public class Server_Fragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //creating a BluetoothService here
-        if(mChatService == null) {
+        if (mChatService == null) {
             mChatService = new BluetoothService(getActivity(), handler);
         }
     }
@@ -83,7 +86,7 @@ public class Server_Fragment extends Fragment {
             sendMessage("server decided to be X");
             fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.activity_main, Game_Fragment.newInstance("X", true));
+            transaction.replace(R.id.activity_main, GameFragment.newInstance("X", true));
             transaction.addToBackStack(null);
             transaction.commit();
             Toast.makeText(getActivity(), "X symbol has been chosen", Toast.LENGTH_SHORT).show();
@@ -93,7 +96,7 @@ public class Server_Fragment extends Fragment {
             sendMessage("server decided to be O");
             fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.activity_main, Game_Fragment.newInstance("O", true));
+            transaction.replace(R.id.activity_main, GameFragment.newInstance("O", true));
             transaction.addToBackStack(null);
             transaction.commit();
             Toast.makeText(getActivity(), "O symbol has been chosen", Toast.LENGTH_SHORT).show();
@@ -106,7 +109,7 @@ public class Server_Fragment extends Fragment {
             Toast.makeText(getActivity(), "not connected", Toast.LENGTH_SHORT).show();
             return;
         }
-       mChatService.write(msg.getBytes());
+        mChatService.write(msg.getBytes());
     }
 
     static public BluetoothService getBluetoothService() {

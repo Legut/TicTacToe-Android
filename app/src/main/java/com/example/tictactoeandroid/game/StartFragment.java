@@ -1,4 +1,4 @@
-package com.example.tictactoeandroid;
+package com.example.tictactoeandroid.game;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,9 +18,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.tictactoeandroid.R;
+
 import java.util.Set;
 
-public class Start_Fragment extends Fragment {
+public class StartFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private BluetoothAdapter mBluetoothAdapter = null;
 
@@ -31,15 +33,15 @@ public class Start_Fragment extends Fragment {
     public void startbt() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
-            Toast.makeText(getActivity(),"This device does not support bluetooth.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "This device does not support bluetooth.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (!mBluetoothAdapter.isEnabled()) {
-            Toast.makeText(getActivity(),"There is bluetooth, but turned off.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "There is bluetooth, but turned off.", Toast.LENGTH_SHORT).show();
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityIntent.launch(enableBtIntent);
         } else {
-            Toast.makeText(getActivity(),"The bluetooth is ready to use.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "The bluetooth is ready to use.", Toast.LENGTH_SHORT).show();
             querypaired();
         }
     }
@@ -56,7 +58,7 @@ public class Start_Fragment extends Fragment {
             }
 
         } else {
-            Toast.makeText(getActivity(),"There are no paired devices.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "There are no paired devices.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -83,9 +85,9 @@ public class Start_Fragment extends Fragment {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     querypaired();
                 } else {
-                    Toast.makeText(getActivity(),"Please turn the bluetooth on.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please turn the bluetooth on.", Toast.LENGTH_SHORT).show();
                 }
-    });
+            });
 
     @Override
     public void onAttach(@NonNull Context context) {

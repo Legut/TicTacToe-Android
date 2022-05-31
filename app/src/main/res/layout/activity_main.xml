@@ -4,6 +4,5 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
-    tools:context=".MainActivity">
-
+    tools:context=".ChallengeActivity">
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/fullscreen_content">
-
     <TableLayout
         android:id="@+id/Grid"
         android:layout_width="fill_parent"
@@ -11,14 +10,12 @@
         android:layout_weight="1"
         android:background="#008EFF"
         android:keepScreenOn="true">
-
         <TableRow
             android:id="@+id/Row1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
-
             <TextView
                 android:id="@+id/cell11"
                 android:layout_width="0dp"
@@ -29,8 +26,8 @@
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="50sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:focusable="true" />
             <TextView
                 android:id="@+id/cell12"
                 android:layout_width="0dp"
@@ -41,8 +38,8 @@
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="50sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:focusable="true" />
             <TextView
                 android:id="@+id/cell13"
                 android:layout_width="0dp"
@@ -53,16 +50,15 @@
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:focusable="true" />
         </TableRow>
-
         <TableRow
             android:id="@+id/Row2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
-
             <TextView
                 android:id="@+id/cell21"
                 android:layout_width="0dp"
@@ -73,8 +69,8 @@
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="50sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:focusable="true" />
             <TextView
                 android:id="@+id/cell22"
                 android:layout_width="0dp"
@@ -85,8 +81,8 @@
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="50sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:focusable="true" />
             <TextView
                 android:id="@+id/cell23"
                 android:layout_width="0dp"
@@ -97,16 +93,15 @@
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:focusable="true" />
         </TableRow>
-
         <TableRow
             android:id="@+id/Row3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
-
             <TextView
                 android:id="@+id/cell31"
                 android:layout_width="0dp"
@@ -117,8 +112,8 @@
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="50sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:focusable="true" />
             <TextView
                 android:id="@+id/cell32"
                 android:layout_width="0dp"
@@ -129,8 +124,8 @@
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="50sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:focusable="true" />
             <TextView
                 android:id="@+id/cell33"
                 android:layout_width="0dp"
@@ -141,7 +136,8 @@
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:focusable="true" />
         </TableRow>
     </TableLayout>
     <LinearLayout
@@ -149,16 +145,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="#4d4d4d">
-
         <TextView
             android:id="@+id/Status"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:text="nothing"
+            android:text="@string/nothing"
             android:textSize="20sp"
             android:gravity="center"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:focusable="true" />
         <TextView
             android:id="@+id/thing"
             android:layout_weight="1"

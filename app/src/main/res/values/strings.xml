@@ -23,4 +23,14 @@
     <string name="waiting_for_client">Waiting for client…</string>
     <string name="join_a_game">Join a game</string>
     <string name="host_game">Host game</string>
+    <string name="mute">Mute</string>
+    <string name="nickname">nickname</string>
+    <string name="email_test_pl">email@test.pl</string>
+    <string name="haslohaslo">haslohaslo</string>
+    <string name="theme">Theme</string>
+    <string name="play_music">Play music</string>
+    <string name="device">Device: ?</string>
+    <string name="join">Join</string>
+    <string name="ready_to_play">ready to play!</string>
+    <string name="nothing">nothing</string>
 </resources>
