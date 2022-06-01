@@ -33,4 +33,5 @@
     <string name="join">Join</string>
     <string name="ready_to_play">ready to play!</string>
     <string name="nothing">nothing</string>
+    <string name="email_empty">Email is required!</string>
 </resources>

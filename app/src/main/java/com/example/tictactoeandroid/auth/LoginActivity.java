@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.tictactoeandroid.MainMenuActivity;
 import com.example.tictactoeandroid.R;
+import com.google.common.io.Resources;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
@@ -96,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
     private void quickToast(String text) {
         if(lastToast != null) { lastToast.cancel(); }
         if(!text.equals("")) {
-            lastToast = Toast.makeText(LoginActivity.this, text, Toast.LENGTH_SHORT);
+            lastToast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             lastToast.show();
         }
     }
