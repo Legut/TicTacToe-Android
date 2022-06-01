@@ -85,6 +85,14 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    public static boolean dataIsCorrectStatic(String email, String password) {
+        if(email == null || email.length() == 0)
+            return false;
+        if(password == null || password.length() == 0)
+            return false;
+        return true;
+    }
+
     private void quickToast(String text) {
         if(lastToast != null) { lastToast.cancel(); }
         if(!text.equals("")) {
